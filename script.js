@@ -35,14 +35,89 @@ const nuevoEmpleado = new Empleado ("","","","","")
 
 const empleados = [empleado1, empleado2, empleado3, empleado4, empleado5]
 
+const inputOpcion = document.getElementById("inputOpcion")
+
+inputOpcion.addEventListener("change", () => {
+    opcion = parseInt(document.getElementById(("inputOpcion")).value) 
+
+    switch (opcion){
+        case 1:
+            do {
+                monto = parseFloat(prompt("Ingrese el monto que desea cambiar"))
+                moneda = parseInt (prompt ("Elija el tipo de moneda del dinero que usted tiene, ingrese 1 para peso argentino, 2-peso uruguayo, 3-dólares, 4-euro, 5-real, 6-libra esterlina, 7-franco suizo"))
+                monedaDevolucion = parseInt(prompt("¿A qué moneda desea que le cambiemos su dinero? Ingrese 1 para peso argentino, 2-peso uruguayo, 3-dólares, 4-euro, 5-real, 6-libra esterlina, 7-franco suizo"))
+                
+                    if (isNaN (monto) || isNaN(moneda) || isNaN(monedaDevolucion)){
+                        alert("Ingrese números")
+                    }
+    
+            } while (isNaN (monto) || isNaN(moneda) || isNaN(monedaDevolucion) || validarDatos(monto,moneda,monedaDevolucion))
+    
+            console.log("CAMBIO CODER UY")
+            console.log ("Usted está siendo atendido por " + (empleado1.nombre) + (empleado1.apellido))
+            monto = (cambioMoneda (monto,moneda,monedaDevolucion))
+            console.log ('Su monto en pesos uruguayos es $ ' + (monto))
+            calcularDevolucion (monto,monedaDevolucion)
+            break
+        case 2:
+            nombreX = prompt("Escriba el nombre del empleado en minúsculas")
+            nuevoEmpleado.nombre = nombreX
+            empleados.push (nuevoEmpleado)
+            console.log("LISTA DE EMPLEADOS ACTUALIZADA")
+            listarEmpleados()
+            alert (nuevoEmpleado.nombre + " ha sido añadido exitosamente")
+            break
+        case 3:
+            nombreX = prompt("Escriba el nombre del empleado en minúsculas")
+            indice = buscarEmpleado(nombreX)
+            if (indice != -1){
+                empleados.splice(indice, 1)
+                console.log("LISTA DE EMPLEADOS ACTUALIZADA")
+                listarEmpleados()
+                alert ("Su empleado ha sido eliminado")
+            }else{
+                alert ("No se encontró el nombre, intenten de nuevo por favor")
+            }
+            break 
+        case 4:
+            nombreX = prompt("Ingrese en minúsculas el nombre del empleado que desea cambiar de puesto")
+            indice = buscarEmpleado(nombreX)
+            if (indice != -1){
+                console.log("El empleado seleccionado es " + empleados[indice].nombre)
+                console.log("Su puesto actual es " + empleados[indice].puesto)
+                let nuevoPuesto = prompt ("Ingrese el nuevo puesto")
+                empleados[indice].cambiarPuesto(nuevoPuesto)
+                console.log (empleados[indice].nombre + " ha cambiado su puesto ha " + nuevoPuesto)
+            }
+            break
+        case 5:
+            nombreX = prompt("Ingrese en minúsculas el nombre del empleado que desea aumentar el salario")
+            indice = buscarEmpleado(nombreX)
+            if (indice != -1){
+                console.log("El empleado seleccionado es " + empleados[indice].nombre)
+                console.log("Su salario actual es " + empleados[indice].salario)
+                let nuevoSalario = prompt ("Ingrese el nuevo salario")
+                empleados[indice].aumentarSalario(nuevoSalario)
+                console.log (empleados[indice].nombre + " ha cambiado su salario ha " + nuevoSalario)
+            }
+            break
+        default:
+            alert ("Ingrese una opción válida")
+            break
+    }
+
+})
+
+console.log("BIENVENIDO A CAMBIO CODER UY")
+console.log("LISTA DE EMPLEADOS")
+listarEmpleados()
+
 function listarEmpleados (){
     for (let i = 0; i < empleados.length; i++){
         console.log(empleados[i].nombre)
     }
 }
-console.log("BIENVENIDO A CAMBIO CODER UY")
-console.log("LISTA DE EMPLEADOS")
-listarEmpleados()
+
 function buscarEmpleado (nombreEmpleado){
     for (let i = 0; i < empleados.length; i++){
         if (nombreEmpleado === empleados[i].nombre) {
@@ -147,77 +222,3 @@ function calcularDevolucion (monto,monedaDevolucion){
             break
     }
 }
-
-
-
-do {
-    opcion = parseInt (prompt("Elija una opción: ingrese 1 para cambiar dinero - ingrese 2 para añadir un empleado - ingrese 3 para eliminar un empleado - ingrese 4 si desea cambiar de puesto un empleado - ingrese 5 para aumentar el sueldo a un empleado"))
-}while (isNaN(opcion))
-
-switch (opcion){
-    case 1:
-        do {
-            monto = parseFloat(prompt("Ingrese el monto que desea cambiar"))
-            moneda = parseInt (prompt ("Elija el tipo de moneda del dinero que usted tiene, ingrese 1 para peso argentino, 2-peso uruguayo, 3-dólares, 4-euro, 5-real, 6-libra esterlina, 7-franco suizo"))
-            monedaDevolucion = parseInt(prompt("¿A qué moneda desea que le cambiemos su dinero? Ingrese 1 para peso argentino, 2-peso uruguayo, 3-dólares, 4-euro, 5-real, 6-libra esterlina, 7-franco suizo"))
-            
-                if (isNaN (monto) || isNaN(moneda) || isNaN(monedaDevolucion)){
-                    alert("Ingrese números")
-                }
-
-        } while (isNaN (monto) || isNaN(moneda) || isNaN(monedaDevolucion) || validarDatos(monto,moneda,monedaDevolucion))
-
-        console.log("CAMBIO CODER UY")
-        console.log ("Usted está siendo atendido por " + (empleado1.nombre) + (empleado1.apellido))
-        monto = (cambioMoneda (monto,moneda,monedaDevolucion))
-        console.log ('Su monto en pesos uruguayos es $ ' + (monto))
-        calcularDevolucion (monto,monedaDevolucion)
-        break
-    case 2:
-        nombreX = prompt("Escriba el nombre del empleado en minúsculas")
-        nuevoEmpleado.nombre = nombreX
-        empleados.push (nuevoEmpleado)
-        console.log("LISTA DE EMPLEADOS ACTUALIZADA")
-        listarEmpleados()
-        alert (nuevoEmpleado.nombre + " ha sido añadido exitosamente")
-        break
-    case 3:
-        nombreX = prompt("Escriba el nombre del empleado en minúsculas")
-        indice = buscarEmpleado(nombreX)
-        if (indice != -1){
-            empleados.splice(indice, 1)
-            console.log("LISTA DE EMPLEADOS ACTUALIZADA")
-            listarEmpleados()
-            alert ("Su empleado ha sido eliminado")
-        }else{
-            alert ("No se encontró el nombre, intenten de nuevo por favor")
-        }
-        break 
-    case 4:
-        nombreX = prompt("Ingrese en minúsculas el nombre del empleado que desea cambiar de puesto")
-        indice = buscarEmpleado(nombreX)
-        if (indice != -1){
-            console.log("El empleado seleccionado es " + empleados[indice].nombre)
-            console.log("Su puesto actual es " + empleados[indice].puesto)
-            let nuevoPuesto = prompt ("Ingrese el nuevo puesto")
-            empleados[indice].cambiarPuesto(nuevoPuesto)
-            console.log (empleados[indice].nombre + " ha cambiado su puesto ha " + nuevoPuesto)
-        }
-        break
-    case 5:
-        nombreX = prompt("Ingrese en minúsculas el nombre del empleado que desea aumentar el salario")
-        indice = buscarEmpleado(nombreX)
-        if (indice != -1){
-            console.log("El empleado seleccionado es " + empleados[indice].nombre)
-            console.log("Su salario actual es " + empleados[indice].salario)
-            let nuevoSalario = prompt ("Ingrese el nuevo salario")
-            empleados[indice].aumentarSalario(nuevoSalario)
-            console.log (empleados[indice].nombre + " ha cambiado su salario ha " + nuevoSalario)
-        }
-        break
-    default:
-        alert ("Ingrese una opción válida")
-        break
-}
-
-
