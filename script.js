@@ -1,5 +1,4 @@
-
-let monto, moneda, monedaDevolucion, opcion, nombreX
+let monto, moneda, monedaDevolucion
 
 const uru = 1
 const dolar = 40
@@ -10,14 +9,13 @@ const libra = 48.8
 const franco = 41.6
 
 class Empleado {
-    constructor (nombre, apellido, fechaNacimiento, puesto, salario){
+    constructor(nombre, apellido, fechaNac, puesto, salario) {
         this.nombre = nombre
         this.apellido = apellido
-        this.fechaNacimiento = fechaNacimiento
+        this.fechaNac = fechaNac
         this.puesto = puesto
         this.salario = salario
     }
-
     cambiarPuesto (nuevoPuesto){
         this.puesto = nuevoPuesto
     }
@@ -26,91 +24,104 @@ class Empleado {
     }
 }
 
-const empleado1 = new Empleado ("samuel", " Eto'o", "12/05/1987", "Agente de atención al cliente", 25000)
-const empleado2 = new Empleado ("ronaldinho", " Gaucho", "03/10/1982", "Agente de atención al cliente", 25000)
-const empleado3 = new Empleado ("lionel", " Messi", "27/01/1985", "Agente de atención al cliente", 25000)
-const empleado4 = new Empleado ("carles", " Puyol", "30/04/1978", "Agente de atención al cliente", 25000)
-const empleado5 = new Empleado ("clarence", " Seedorf", "23/03/1975", "Agente de atención al cliente", 25000)
-const nuevoEmpleado = new Empleado ("","","","","")
+let empleados = []
 
-const empleados = [empleado1, empleado2, empleado3, empleado4, empleado5]
+if(localStorage.getItem('empleados')) {
+    tareas = JSON.parse(localStorage.getItem('empleados'))
+} else {
+    localStorage.setItem('empleados', JSON.stringify(empleados))
+}
 
-const inputOpcion = document.getElementById("inputOpcion")
+const formEmpleados = document.getElementById("formEmpleados")
+const divEmpleados = document.getElementById("divEmpleados")
+const botonEmpleados = document.getElementById("botonEmpleados")
 
-inputOpcion.addEventListener("change", () => {
-    opcion = parseInt(document.getElementById(("inputOpcion")).value) 
+formEmpleados.addEventListener('submit', (e) => {
+    e.preventDefault()
+    console.log(e.target)
+    let datForm = new FormData(e.target)
 
-    switch (opcion){
-        case 1:
-            do {
-                monto = parseFloat(prompt("Ingrese el monto que desea cambiar"))
-                moneda = parseInt (prompt ("Elija el tipo de moneda del dinero que usted tiene, ingrese 1 para peso argentino, 2-peso uruguayo, 3-dólares, 4-euro, 5-real, 6-libra esterlina, 7-franco suizo"))
-                monedaDevolucion = parseInt(prompt("¿A qué moneda desea que le cambiemos su dinero? Ingrese 1 para peso argentino, 2-peso uruguayo, 3-dólares, 4-euro, 5-real, 6-libra esterlina, 7-franco suizo"))
-                
-                    if (isNaN (monto) || isNaN(moneda) || isNaN(monedaDevolucion)){
-                        alert("Ingrese números")
-                    }
-    
-            } while (isNaN (monto) || isNaN(moneda) || isNaN(monedaDevolucion) || validarDatos(monto,moneda,monedaDevolucion))
-    
-            console.log("CAMBIO CODER UY")
-            console.log ("Usted está siendo atendido por " + (empleado1.nombre) + (empleado1.apellido))
-            monto = (cambioMoneda (monto,moneda,monedaDevolucion))
-            console.log ('Su monto en pesos uruguayos es $ ' + (monto))
-            calcularDevolucion (monto,monedaDevolucion)
-            break
-        case 2:
-            nombreX = prompt("Escriba el nombre del empleado en minúsculas")
-            nuevoEmpleado.nombre = nombreX
-            empleados.push (nuevoEmpleado)
-            console.log("LISTA DE EMPLEADOS ACTUALIZADA")
-            listarEmpleados()
-            alert (nuevoEmpleado.nombre + " ha sido añadido exitosamente")
-            break
-        case 3:
-            nombreX = prompt("Escriba el nombre del empleado en minúsculas")
-            indice = buscarEmpleado(nombreX)
-            if (indice != -1){
-                empleados.splice(indice, 1)
-                console.log("LISTA DE EMPLEADOS ACTUALIZADA")
-                listarEmpleados()
-                alert ("Su empleado ha sido eliminado")
-            }else{
-                alert ("No se encontró el nombre, intenten de nuevo por favor")
-            }
-            break 
-        case 4:
-            nombreX = prompt("Ingrese en minúsculas el nombre del empleado que desea cambiar de puesto")
-            indice = buscarEmpleado(nombreX)
-            if (indice != -1){
-                console.log("El empleado seleccionado es " + empleados[indice].nombre)
-                console.log("Su puesto actual es " + empleados[indice].puesto)
-                let nuevoPuesto = prompt ("Ingrese el nuevo puesto")
-                empleados[indice].cambiarPuesto(nuevoPuesto)
-                console.log (empleados[indice].nombre + " ha cambiado su puesto ha " + nuevoPuesto)
-            }
-            break
-        case 5:
-            nombreX = prompt("Ingrese en minúsculas el nombre del empleado que desea aumentar el salario")
-            indice = buscarEmpleado(nombreX)
-            if (indice != -1){
-                console.log("El empleado seleccionado es " + empleados[indice].nombre)
-                console.log("Su salario actual es " + empleados[indice].salario)
-                let nuevoSalario = prompt ("Ingrese el nuevo salario")
-                empleados[indice].aumentarSalario(nuevoSalario)
-                console.log (empleados[indice].nombre + " ha cambiado su salario ha " + nuevoSalario)
-            }
-            break
-        default:
-            alert ("Ingrese una opción válida")
-            break
-    }
-
+   let empleado = new Empleado(datForm.get('nombre'), datForm.get('apellido'), datForm.get('fechaNac'), datForm.get('puesto'), datForm.get('salario'))
+   empleados.push(empleado)
+   console.log(empleados)
+   localStorage.setItem('empleados', JSON.stringify(empleados))
+    formEmpleados.reset()
 })
 
-console.log("BIENVENIDO A CAMBIO CODER UY")
-console.log("LISTA DE EMPLEADOS")
-listarEmpleados()
+
+
+botonEmpleados.addEventListener('click', () => {
+    let arrayStorage = JSON.parse(localStorage.getItem('empleados'))
+    divEmpleados.innerHTML = ""
+    arrayStorage.forEach((empleado, indice) => {
+        
+        divEmpleados.innerHTML += `
+        <div class="card border-dark mb-3" id="empleado${indice}" style="max-width: 20rem; margin:4px;">
+            <div class="card-header"><h2>${empleado.nombre} ${empleado.apellido}</h2></div>
+            <div class="card-body">
+                <p class="card-title">${empleado.fechaNac}</p>
+                <p class="card-title">${empleado.puesto}</p>
+                <p class="card-title">${empleado.salario}</p>
+                <button class="btn btn-danger">Dar de baja Empleado</button>
+                
+            </div>
+        </div>
+
+        `
+    });
+
+    arrayStorage.forEach((empleado, indice) => {
+        let botonEliminar = document.getElementById(`empleado${indice}`).lastElementChild.lastElementChild
+        botonEliminar.addEventListener('click', () => {
+            document.getElementById(`empleado${indice}`).remove()
+            empleados.splice(indice,1)
+            localStorage.setItem('empleados', JSON.stringify(empleados))
+            console.log(`${empleado.nombre} Eliminado`)
+        })
+    })
+})
+
+
+botonAtenderCliente.addEventListener("click", () => {
+    divClientes.innerHTML += `
+        <form id="formClientes">
+
+            <div class="mb-3">
+                <label for="montoCambiar" class="form-label">Ingrese la cantidad de dinero que desea cambiar</label>
+                <input type="number" class="form-control" id="montoCambiar" name="monto"> 
+            </div>
+            <div class="mb-3">
+                <label for="monedaCliente" class="form-label">Ingrese tipo de moneda de su dinero</label>
+                <label> Elija el tipo de moneda del dinero que usted tiene, ingrese 1 para peso argentino, 2-peso uruguayo, 3-dólar, 4-euro, 5-real, 6-libra esterlina, 7-franco suizo </label>
+                <input type="number" class="form-control" id="monedaCliente" name="monedaC">
+            </div>
+            <div class="mb-3">
+                <label for="monedaDevolucion" class="form-label">Ingrese tipo de moneda en que desea su cambio</label>
+                <label> ¿A qué moneda desea que le cambiemos su dinero? Ingrese 1 para peso argentino, 2-peso uruguayo, 3-dólares, 4-euro, 5-real, 6-libra esterlina, 7-franco suizo </label>
+                <input type="number" class="form-control" id="monedaDevolucion" name="monedaD">
+            </div>
+
+            <button type="submit" class="btn btn-primary">Efectuar Cambio</button>
+
+        </form>
+
+        `
+        formClientes.addEventListener('submit', (e) => {
+            e.preventDefault()
+            
+            let datForm = new FormData(e.target)
+            console.log(parseInt(datForm.get("monedaC")))
+            let monedaCli = datForm.get("monedaC")
+            let mon = datForm.get("monto")
+            console.log (monedaCli, mon)
+            monto = cambioMoneda (mon, monedaCli)
+
+            console.log ('Su monto en pesos uruguayos es $ ' + (monto))
+            calcularDevolucion (monto,monedaDevolucion)
+
+        })
+
+});
 
 function listarEmpleados (){
     for (let i = 0; i < empleados.length; i++){
@@ -221,4 +232,4 @@ function calcularDevolucion (monto,monedaDevolucion){
             alert ("Número de moneda no válido")
             break
     }
-}
+} 

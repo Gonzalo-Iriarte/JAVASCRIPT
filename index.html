@@ -3,16 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="https://bootswatch.com/5/sketchy/bootstrap.min.css">
 </head>
 <body>
-    <span>
-        "Elija una opción y presione Enter: ingrese 1 para cambiar dinero - ingrese 2 para añadir un empleado - ingrese 3 para eliminar un empleado - ingrese 4 si desea cambiar de puesto un empleado - ingrese 5 para aumentar el sueldo a un empleado"
-    </span>
-    
-    <input type="text" id="inputOpcion">
+    <div class="container">
+        <span>BIENVENIDO A CAMBIO CODER UY</span><br><br>
+        <div class="container">
+            <button id="botonAtenderCliente" class="btn btn-secondary">Atender un Cliente</button><br><br>
+            <div id="divClientes" class="row"></div>
+        </div><br><br>
 
+        <span>Seccion Empleados</span><br><br>
+        <form id="formEmpleados">
+            <div class="mb-3">
+              <label for="nombreEmpleado" class="form-label">Nombre</label>
+              <input type="text" class="form-control" id="nombreEmpleado" name="nombre"> 
+            </div>
+            <div class="mb-3">
+                <label for="apellidoEmpleado" class="form-label">Apellido</label>
+                <input type="text" class="form-control" id="apellidoEmpleado" name="apellido">
+            </div>
+            <div class="mb-3">
+                <label for="fechaNacimientoEmpleado" class="form-label">Fecha de nacimiento</label>
+                <input type="text" class="form-control" id="fechaNacimientoEmpleado" name="fechaNac">
+            </div>
+            <div class="mb-3">
+                <label for="puestoEmpleado" class="form-label">Puesto que ocupa</label>
+                <input type="text" class="form-control" id="puestoEmpleado" name="puesto">
+            </div>
+            <div class="mb-3">
+                <label for="salarioEmpleado" class="form-label">Remuneración mensual</label>
+                <input type="text" class="form-control" id="salarioEmpleado" name="salario">
+            </div>
+
+            <button type="submit" class="btn btn-primary">Dar de Alta Empleado</button>
+
+          </form>
+    </div><br><br>
+    <div class="container">
+        <button id="botonEmpleados" class="btn btn-dark">Mostrar todos los Empleados</button><br><br>
+        
+        <div id= "divEmpleados" class="row"></div>   
+    </div>
+    
     <script src="script.js"></script>
 </body>
 </html>
