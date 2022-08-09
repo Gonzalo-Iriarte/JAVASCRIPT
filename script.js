@@ -38,17 +38,14 @@ const botonEmpleados = document.getElementById("botonEmpleados")
 
 formEmpleados.addEventListener('submit', (e) => {
     e.preventDefault()
-    console.log(e.target)
+    
     let datForm = new FormData(e.target)
-
-   let empleado = new Empleado(datForm.get('nombre'), datForm.get('apellido'), datForm.get('fechaNac'), datForm.get('puesto'), datForm.get('salario'))
-   empleados.push(empleado)
-   console.log(empleados)
-   localStorage.setItem('empleados', JSON.stringify(empleados))
+    let empleado = new Empleado(datForm.get('nombre'), datForm.get('apellido'), datForm.get('fechaNac'), datForm.get('puesto'), datForm.get('salario'))
+    empleados.push(empleado)
+    localStorage.setItem('empleados', JSON.stringify(empleados))
+    Swal.fire (`${empleado.nombre} ${empleado.apellido} ha sido ingresado al sistema exitosamente`)
     formEmpleados.reset()
 })
-
-
 
 botonEmpleados.addEventListener('click', () => {
     let arrayStorage = JSON.parse(localStorage.getItem('empleados'))
@@ -76,11 +73,10 @@ botonEmpleados.addEventListener('click', () => {
             document.getElementById(`empleado${indice}`).remove()
             empleados.splice(indice,1)
             localStorage.setItem('empleados', JSON.stringify(empleados))
-            console.log(`${empleado.nombre} Eliminado`)
+            Swal.fire (`${empleado.nombre} ${empleado.apellido} ha sido eliminado del sistema exitosamente`)
         })
     })
 })
-
 
 botonAtenderCliente.addEventListener("click", () => {
     divClientes.innerHTML += `
@@ -110,32 +106,15 @@ botonAtenderCliente.addEventListener("click", () => {
             e.preventDefault()
             
             let datForm = new FormData(e.target)
-            console.log(parseInt(datForm.get("monedaC")))
-            let monedaCli = datForm.get("monedaC")
-            let mon = datForm.get("monto")
-            console.log (monedaCli, mon)
+          
+            let monedaCli = parseInt(datForm.get("monedaC"))
+            let mon = parseInt(datForm.get("monto"))
+            let monedaDev = parseInt(datForm.get("monedaD"))
+            
             monto = cambioMoneda (mon, monedaCli)
-
-            console.log ('Su monto en pesos uruguayos es $ ' + (monto))
-            calcularDevolucion (monto,monedaDevolucion)
-
+            calcularDevolucion (monto,monedaDev)
         })
-
 });
-
-function listarEmpleados (){
-    for (let i = 0; i < empleados.length; i++){
-        console.log(empleados[i].nombre)
-    }
-}
-
-function buscarEmpleado (nombreEmpleado){
-    for (let i = 0; i < empleados.length; i++){
-        if (nombreEmpleado === empleados[i].nombre) {
-            return (i)
-        }
-    }
-}
 
 function validarDatos (monto, moneda,monedaDevolucion){
     if ((monto > 0) && (monedaDevolucion > 0) && (moneda > 0) && (moneda < 8) && (monedaDevolucion < 8) && (moneda != monedaDevolucion)){
@@ -148,30 +127,32 @@ function validarDatos (monto, moneda,monedaDevolucion){
 }
 
 function cambioMoneda (monto, moneda){
+  
     switch (moneda){
         case 1:
             //peso argentino
-            console.log ("Usted entregó " + (monto) + " pesos argentinos")
+            Swal.fire ("Usted entregó " + (monto) + " pesos argentinos")
             monto = monto * arg
             break
         case 2:
             //peso uruguayo
-            console.log ("Usted entregó " + (monto) + " pesos uruguayos")
+            Swal.fire ("Usted entregó " + (monto) + " pesos uruguayos")
             monto = monto * uru
             break
         case 3:
             //dolar
-            console.log ("Usted entregó " + (monto) + " dólares")
+            Swal.fire ("Usted entregó " + (monto) + " dólares")
             monto = monto * dolar
             break
         case 4:
             //euro
-            console.log ("Usted entregó " + (monto) + " euros")
+            Swal.fire ("Usted entregó " + (monto) + " euros")
             monto = monto * euro
             break
         case 5:
             //real
-            console.log ("Usted entregó " + (monto) + " reales")
+             
+            Swal.fire ("Usted entregó " + (monto) + " reales")
             monto = monto * real
             break
         case 6:
@@ -181,55 +162,66 @@ function cambioMoneda (monto, moneda){
             break
         case 7:
             //franco
-            console.log ("Usted entregó " + (monto) + " francos suizos")
+            Swal.fire ("Usted entregó " + (monto) + " francos suizos")
             monto = monto * franco
             break
         default:
-            alert ("Número de moneda no válido")
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Número de moneda no válido!',
+                footer: '<a href="">Why do I have this issue?</a>'
+              })
             break
     }
     return monto
 }
    
 function calcularDevolucion (monto,monedaDevolucion){
+
     switch(monedaDevolucion){
         case 1:
             //peso argentino
            monto = monto / arg
-           console.log ("Le devolvemos $ " + parseInt(monto) + " pesos argentinos")
+           Swal.fire ("Le devolvemos $ " + parseInt(monto) + " pesos argentinos")
             break
         case 2:
             //peso uruguayo
             monto = monto / uru 
-            console.log ("Le devolvemos $ " + parseInt(monto) + " pesos uruguayos")
+            Swal.fire ("Le devolvemos $ " + parseInt(monto) + " pesos uruguayos")
             break
         case 3:
             //dolar
             monto = monto / dolar
-            console.log ("Le devolvemos $ " + monto + " dolares")
+            Swal.fire ("Le devolvemos $ " + monto + " dolares")
             break
         case 4:
             //euro
             monto = monto / euro
-            console.log ("Le devolvemos $ " + parseInt(monto) + " euros")
+            Swal.fire ("Le devolvemos $ " + parseInt(monto) + " euros")
             break
         case 5:
             //real
             monto = monto / real
-            console.log ("Le devolvemos $ " + parseInt(monto) + " reales")
+            Swal.fire ("Le devolvemos $ " + parseInt(monto) + " reales")
             break
         case 6:
             //libra
             monto = monto / libra
-            console.log ("Le devolvemos $ " + parseInt(monto) + " libras esterlinas")
+            Swal.fire ("Le devolvemos $ " + parseInt(monto) + " libras esterlinas")
             break
         case 7:
             //franco
             monto = monto / franco
-            console.log ("Le devolvemos $ " + parseInt(monto) + " francos suizos")
+            Swal.fire ("Le devolvemos $ " + parseInt(monto) + " francos suizos")
             break
         default:
-            alert ("Número de moneda no válido")
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Número de moneda no válido!',
+                footer: '<a href="">Why do I have this issue?</a>'
+              })
             break
     }
 } 
