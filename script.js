@@ -1,12 +1,18 @@
 let monto, moneda, monedaDevolucion
 
 const uru = 1
-const dolar = 40
-const euro = 41.82
-const arg = 0.22
-const real = 7.7
+let dolar = 40
+let euro = 41.82
+let arg = 0.22
+let real = 7.7
 const libra = 48.8
 const franco = 41.6
+
+traerCotizaciones()
+
+setInterval(()=>{
+   traerCotizaciones()
+}, 60000)
 
 class Empleado {
     constructor(nombre, apellido, fechaNac, puesto, salario) {
@@ -224,4 +230,15 @@ function calcularDevolucion (monto,monedaDevolucion){
               })
             break
     }
-} 
+}
+
+function traerCotizaciones(){
+    fetch ("https://cotizaciones-brou.herokuapp.com/api/currency/latest")
+    .then(response => response.json())
+    .then(({rates}) => {
+        arg = (rates.ARS.sell + rates.ARS.buy) / 2
+        dolar = (rates.USD.sell + rates.USD.buy) / 2
+        real = (rates.BRL.sell + rates.BRL.buy) / 2
+        euro = (rates.EUR.sell + rates.EUR.buy) / 2
+    })
+}
